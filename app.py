@@ -13,18 +13,20 @@ from plan_generator import get_plan
 cert_path = "firebase/serviceAccountKey.json"
 if not os.path.exists(cert_path):
     cert_path = "serviceAccountKey.json"
-cred = credentials.Certificate(cert_path)
-# Alternative: Load from environment dict if file doesn't exist or for production
-# import json
+try:
+    cred = credentials.Certificate(cert_path)
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+except Exception as e:
+    print(f"Firebase bypassed: {e}")
+    db = None
 # if not os.path.exists("firebase/serviceAccountKey.json") and os.environ.get('FIREBASE_CREDENTIALS'):
 #     cred = credentials.Certificate(json.loads(os.environ.get('FIREBASE_CREDENTIALS')))
 
-firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
 
-# Get a reference to the Firestore database
-db = firestore.client()
+
 vp = "uploads/a.mp4"
 
 
