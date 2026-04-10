@@ -10,7 +10,10 @@ from model_sad import perform_sentiment_analysis
 from display_model_predictions import display_sad_predictions
 from plan_generator import get_plan
 
-cred = credentials.Certificate("firebase/serviceAccountKey.json")
+cert_path = "firebase/serviceAccountKey.json"
+if not os.path.exists(cert_path):
+    cert_path = "serviceAccountKey.json"
+cred = credentials.Certificate(cert_path)
 # Alternative: Load from environment dict if file doesn't exist or for production
 # import json
 # if not os.path.exists("firebase/serviceAccountKey.json") and os.environ.get('FIREBASE_CREDENTIALS'):
